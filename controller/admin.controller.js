@@ -12,7 +12,7 @@ const createAdmin = async (req, res, next) => {
     next(error);
   }
 };
-
+ 
 const loginAdmin = async (req, res, next) => {
   try {
     const admin = await AdminService.loginAdmin(req.body);
@@ -42,7 +42,7 @@ const editSubAdmin = async (req, res, next) => {
       next(error);
     }
   }
-};
+}; 
 
 const getSubAdminDetails = async (req, res, next) => {
   try {
