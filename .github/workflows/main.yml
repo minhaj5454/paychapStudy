@@ -110,14 +110,14 @@ jobs:
     - name: 🔍 Check DATABASE_URL in .env
       run: grep DATABASE_URL .env
 
-    - name: 📦 Check Prisma version
-      run: npx prisma --version
+    # - name: 📦 Check Prisma version
+    #   run: npx prisma --version
  
-    - name: ⚙️ Generate Prisma client
-      run: npx prisma generate
+    # - name: ⚙️ Generate Prisma client
+    #   run: npx prisma generate
 
-    - name: 🛠 Run Prisma migrations
-      run: npx prisma migrate deploy
+    # - name: 🛠 Run Prisma migrations
+    #   run: npx prisma migrate deploy
 
     - name: 🏷 Extract branch name
       id: extract_branch
