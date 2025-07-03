@@ -140,6 +140,7 @@ i18next.use(Backend).use(middleware.LanguageDetector)
   });
 
 const cors = require("cors");
+const {encryptionFunction,  encryptSingle, decryptSingle } = require("./utils/encryptDecrypt");
 let corsOptions = { origin: '*', optionsSuccessStatus: 200 };
 
 app.use(cors(corsOptions));
@@ -156,7 +157,7 @@ PrivilegesRoutes(app);
 app.use((req, res, next) => {
   res.status(404).send({
     error: 'Page Not Found',
-    message: 'The requested resource was not found updated code 2'
+    message: 'The requested resource was not found updated code 90'
   });
 });
 
@@ -173,3 +174,20 @@ app.use((err, req, res, next) => {
 
 // ✅ export Lambda handler
 module.exports.handler = serverless(app);
+
+
+// const data = {
+//   "username" : "min",
+//   "email": "min@yopmail.com",
+//   "password": "min",
+//   "confirmPassword" : "min"
+// }
+// const encryption = encryptionFunction(data)
+// console.log(encryption);
+
+
+// const encrypt = encryptSingle("Hello, AES Encryption!")
+// console.log(encrypt);
+
+// const decypt = decryptSingle("25b13b3067d73a9b742e363619a69feccb1d45a82c466a0fa2e956929b4ea1d6")
+// console.log(decypt);
