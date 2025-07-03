@@ -27,6 +27,7 @@
 //   });
 
 // const cors = require("cors");
+// const { encryptionFunction, decryptionFunction } = require("./utils/encryptDecrypt");
 // const port = process.env.PORT || 3001;
 // let corsOptions = {
 //   origin: '*',
@@ -67,8 +68,8 @@
 // //   console.log(`Server is running on port ${port}`);
 // // });
 
-// Check database connection and start the server
-// commented below code for serverless aws lambda to run
+// // Check database connection and start the server
+// // commented below code for serverless aws lambda to run
 // async function startServer() {
 //   try {
 //     // Start the server
@@ -84,7 +85,7 @@
 //   }
 // }
 
-// // startServer();
+// startServer();
 
 // // createDatabaseConnection();
 
@@ -99,6 +100,21 @@
 // };
 
 
+// const data = {
+//   "username" : "jhon",
+//   "email": "john.doe@example.com",
+//   "password": "admin",
+//   "confirmPassword" : "admin"
+// }
+// const encryption = encryptionFunction(data)
+// console.log(encryption);
+
+// const decryption = decryptionFunction("8e04acf86edfbbab01782a2a73f445c9c9d4b88c9ab6ca56f92a5fd0f413e24a5f20b8835bb8fb22407a50a53135a0f9a58066473cc208688462ab8d5b5882936eb73504733ff079723e4990bd95c8848f46dbb00a164b6310a569b1efba777610a37eae0709dbc65e00cb6a3e9a912fbd029792ccaa79bcd40bf8e90006d6e435e07cddaba536114401cec9f7fabeb5d9eb631a0eda5b826988635f750133dbfe1bff84b84879f51da3b53f0d53fde7ccdc8fd9d06b05420f177bc10e9ce6e982bf1d54dacf24c2772d7a67f8d9cd6bd6c06609a6d193d1512f8b4154215c3e7333e98f2789f67198bf762d869d94ad6a56ae54622990ef4fb0720eadd2c9e16336baa8ae3d60f9cfe2fa82631f3e3aa47451767adcbe7eacf02194d2f74c8f442c3fe16355dcea23f2d72d1ca6e5830aee78620590d8cbffd69732dce500559d3c5ef4a6c499f0fecc1416b94e43f9")
+// console.log(decryption);
+
+
+
+// aws lambda setup
 
 require("dotenv").config();
 const express = require("express");
@@ -140,7 +156,7 @@ PrivilegesRoutes(app);
 app.use((req, res, next) => {
   res.status(404).send({
     error: 'Page Not Found',
-    message: 'The requested resource was not found updated code'
+    message: 'The requested resource was not found updated code 2'
   });
 });
 
