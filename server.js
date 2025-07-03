@@ -140,7 +140,7 @@ PrivilegesRoutes(app);
 app.use((req, res, next) => {
   res.status(404).send({
     error: 'Page Not Found',
-    message: 'The requested resource was not found'
+    message: 'The requested resource was not found updated code'
   });
 });
 
