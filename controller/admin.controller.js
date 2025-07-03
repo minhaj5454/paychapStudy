@@ -131,12 +131,13 @@ const createSubAdmin = async(req,res) => {
        if(!hashPassword){
             return sendError(res, req.t("try_again"))
         }
-
+ 
         const adminData = {
       //uuid: prisma.uuid(),
       username: decryption.username,
       email: decryption.email,
       password: hashPassword,
+      profileKey : req.file.key
 
     }
         const adminCreated = await AdminService.createAdmin(adminData)

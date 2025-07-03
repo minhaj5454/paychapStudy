@@ -42,6 +42,7 @@ model Admin {
   isDeleted           Boolean               @default(false)
   privileges          AdminPrivilege[]
   AdminBunkerCoinPool AdminBunkerCoinPool[] // Relationship with AdminBunkerCoinPool
+  profileKey String?
 }
 
 model PrivilegeMaster {

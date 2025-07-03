@@ -30,6 +30,7 @@ const getFolderName = (imageType) => {
             return 'user/';
             case "media": return "media/";
             case "barcode" : return "barcode/";
+            case "adminprofile" : return "adminprofile/";
         default:
             throw new Error('Invalid image type');
     }

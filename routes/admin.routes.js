@@ -2,6 +2,7 @@
 const AdminController = require('../controller/admin.controller');
 const authenticateJWT = require('../middlewares/auth'); 
 const ensureSuperAdmin = require('../middlewares/ensureSuperAdmin');
+const uploadFile = require('../middlewares/S3/s3-middleware')('adminprofile');
 
 module.exports = (app) => {
   app.post('/admin', AdminController.createAdmin);
@@ -13,6 +14,6 @@ module.exports = (app) => {
   app.put('/admin/:uuid/privileges', AdminController.updatePrivileges);
   app.patch('/admin/privileges/:uuid/status', AdminController.updatePrivilegeStatus);
   app.patch('/admin/:uuid/status', AdminController.updateAdminStatus);
-  app.post('/createSubAdmin', AdminController.createSubAdmin);
+  app.post('/createSubAdmin', uploadFile.single("adminprofile"), AdminController.createSubAdmin);
   
 };

@@ -56,7 +56,7 @@ const getPresignedUrl = async (key) => {
 
   try {
     const signedUrl = await getSignedUrl(s3Client, command, { expiresIn: 3600 });
-    // console.log(signedUrl);
+    console.log(signedUrl);
     return signedUrl;
   } catch (error) {
     console.error('Error generating pre-signed URL:', error);
