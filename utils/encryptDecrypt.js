@@ -29,3 +29,12 @@ exports.decryptionFunction= function(encryptedStr) {
     const decryptedString = exports.decrypt(encryptedStr);
     return JSON.parse(decryptedString);
 };
+
+
+exports.encryptSingle = function (plainText) {
+    return exports.encrypt(plainText);
+};
+
+exports.decryptSingle = function (encryptedText) {
+    return exports.decrypt(encryptedText);
+};
