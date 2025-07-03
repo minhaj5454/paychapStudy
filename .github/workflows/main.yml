@@ -32,8 +32,8 @@ jobs:
           echo "STAGE=production" >> $GITHUB_ENV
         fi
 
-    - run: npx prisma generate
-    - run: npx prisma migrate deploy
+    # - run: npx prisma generate
+    # - run: npx prisma migrate deploy
 
     - name: Extract branch name
       id: extract_branch
