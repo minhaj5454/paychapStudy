@@ -112,7 +112,7 @@ jobs:
 
     - name: 📦 Check Prisma version
       run: npx prisma --version
-
+ 
     - name: ⚙️ Generate Prisma client
       run: npx prisma generate
 
