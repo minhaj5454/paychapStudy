@@ -1,8 +1,65 @@
+# name: Deploy to AWS
+
+# on:
+#   push:
+#     branches: [main]
+
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
+#     steps:
+#     - uses: actions/checkout@v3
+#     - uses: actions/setup-node@v3
+#       with:
+#         node-version: 18
+#     - run: npm install -g serverless@3.38.0
+#     - run: npm install
+
+#     - name: Set up AWS Credentials
+#       uses: aws-actions/configure-aws-credentials@v1
+#       with:
+#         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#         aws-region: eu-north-1  # Replace with your region, minhaj changed this line 
+
+#     - name: Set environment file
+#       run: |
+#         if [ "${{ github.ref }}" == "refs/heads/dev" ]; then
+#           echo "${{ secrets.STAGING_ENV }}" > .env
+#           echo "STAGE=staging" >> $GITHUB_ENV
+#         elif [ "${{ github.ref }}" == "refs/heads/main" ]; then
+#           echo "${{ secrets.PRODUCTION_ENV }}" > .env
+#           echo "STAGE=production" >> $GITHUB_ENV
+#         fi
+
+#     - run: npx prisma generate
+#     - run: npx prisma migrate deploy
+
+#     - name: Extract branch name
+#       id: extract_branch
+#       run: echo "branch_name=${GITHUB_REF##*/}" >> $GITHUB_ENV
+
+#     #- name: Serverless Login
+#      # run: echo "${{ secrets.SERVERLESS_TOKEN }}" | serverless login --token
+
+#     #- run: serverless deploy --stage ${{ env.branch_name }} --verbose
+#     #- name: Serverless deploy
+#     #  run: serverless deploy --stage ${{ env.STAGE }} --verbose
+#     - name: Serverless deploy
+#       run: |
+#         echo "Deploying to stage ${{ env.STAGE }}"
+#         serverless deploy --stage ${{ env.STAGE }} --verbose
+
+
 name: Deploy to AWS
 
 on:
   push:
-    branches: [main]
+    branches:
+      - minhajDev
+      - junedDev
+      - sandbox
+      - main
 
 jobs:
   deploy:
@@ -20,11 +77,11 @@ jobs:
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: eu-north-1  # Replace with your region, minhaj changed this line 
+        aws-region: eu-north-1
 
     - name: Set environment file
       run: |
-        if [ "${{ github.ref }}" == "refs/heads/dev" ]; then
+        if [ "${{ github.ref }}" == "refs/heads/sandbox" ]; then
           echo "${{ secrets.STAGING_ENV }}" > .env
           echo "STAGE=staging" >> $GITHUB_ENV
         elif [ "${{ github.ref }}" == "refs/heads/main" ]; then
@@ -32,20 +89,16 @@ jobs:
           echo "STAGE=production" >> $GITHUB_ENV
         fi
 
-    # - run: npx prisma generate
-    # - run: npx prisma migrate deploy
+    - run: npx prisma generate
+    - run: npx prisma migrate deploy
 
     - name: Extract branch name
       id: extract_branch
       run: echo "branch_name=${GITHUB_REF##*/}" >> $GITHUB_ENV
 
-    #- name: Serverless Login
-     # run: echo "${{ secrets.SERVERLESS_TOKEN }}" | serverless login --token
-
-    #- run: serverless deploy --stage ${{ env.branch_name }} --verbose
-    #- name: Serverless deploy
-    #  run: serverless deploy --stage ${{ env.STAGE }} --verbose
+    # Deploy only if branch is sandbox or main
     - name: Serverless deploy
+      if: github.ref == 'refs/heads/sandbox' || github.ref == 'refs/heads/main'
       run: |
         echo "Deploying to stage ${{ env.STAGE }}"
         serverless deploy --stage ${{ env.STAGE }} --verbose

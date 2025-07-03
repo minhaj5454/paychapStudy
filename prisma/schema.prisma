@@ -39,6 +39,7 @@ model Admin {
   status              Boolean               @default(true)
   token               String?
   otp                 Int?
+  isDeleted           Boolean               @default(false)
   privileges          AdminPrivilege[]
   AdminBunkerCoinPool AdminBunkerCoinPool[] // Relationship with AdminBunkerCoinPool
 }

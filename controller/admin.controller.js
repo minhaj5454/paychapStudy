@@ -1,5 +1,8 @@
 // src/controllers/admin.controller.js
 const AdminService = require('../service/admin/adminService');
+const { decryptionFunction, encryptionFunction } = require('../utils/encryptDecrypt');
+const bcrypt = require("bcryptjs")
+const { sendSuccess, sendError } = require('../utils/responseWrapper');
 
 const createAdmin = async (req, res, next) => {
   try {
@@ -19,14 +22,14 @@ const loginAdmin = async (req, res, next) => {
   }
 };
 
-const createSubAdmin = async (req, res, next) => {
-  try {
-    const subAdmin = await AdminService.createSubAdmin(req.body);
-    res.status(201).json(subAdmin);
-  } catch (error) {
-    next(error);
-  }
-};
+// const createSubAdmin = async (req, res, next) => {
+//   try {
+//     const subAdmin = await AdminService.createSubAdmin(req.body);
+//     res.status(201).json(subAdmin);
+//   } catch (error) {
+//     next(error);
+//   }
+// };
 
 const editSubAdmin = async (req, res, next) => {
   try {
@@ -104,6 +107,53 @@ const updateAdminStatus = async (req, res) => {
     }
   }
 };
+
+  
+const createSubAdmin = async(req,res) => {
+    try {
+        const {data} = req.body;
+        const decryption = decryptionFunction(data)
+
+        if(!decryption.username || !decryption.email || !decryption.password || !decryption.confirmPassword){
+            return sendError(res, req.t("content_not_empty"))
+        }
+        const email = decryption.email;
+        const findExist = await AdminService.findByAny({email})
+        if(findExist){
+            return sendError(res, req.t("user_already_exists"))
+        }
+
+        if(decryption.password !== decryption.confirmPassword ) {
+        return sendError(res, req.t("confirm_password_not_match"))
+    }
+
+        const hashPassword = await bcrypt.hash(decryption.password, 10)
+       if(!hashPassword){
+            return sendError(res, req.t("try_again"))
+        }
+
+        const adminData = {
+      //uuid: prisma.uuid(),
+      username: decryption.username,
+      email: decryption.email,
+      password: hashPassword,
+
+    }
+        const adminCreated = await AdminService.createAdmin(adminData)
+
+        if(!adminCreated){
+            return sendError(res, req.t("failed_to_create_admin"))
+        }
+
+        const encryption = encryptionFunction(adminCreated)
+
+        return sendSuccess(res, 201, req.t("admin_created_successfully"), encryption)
+
+    } catch (error) {
+        console.log("error is in create subAdmin : ", error)
+        sendError(res,req.t("something_went_wrong"))
+    }
+}
 
 module.exports = {
   createAdmin,

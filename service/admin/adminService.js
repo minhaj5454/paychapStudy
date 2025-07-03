@@ -4,33 +4,33 @@ const bcryptUtil = require('../../modules/bcryptUtil');
 const jwt = require('jsonwebtoken');
 
 
-const createAdmin = async (data) => {
-  const hashedPassword = await bcryptUtil.hashPassword(data.password);
-  const admin = await prisma.admin.create({
-    data: {
-      //uuid: prisma.uuid(),
-      username: data.username,
-      email: data.email,
-      password: hashedPassword,
-      isSuper: data.isSuper || false,
-      privileges: {
-        create: data.privileges.map(privilege => ({
-          //uuid: prisma.uuid(),
-          privilegeMasterUuid: privilege.privilegeMasterUuid,
-          status: privilege.status
-        }))
-      }
-    },
-    include: {
-      privileges: {
-        include: {
-          privilegeMaster: true
-        }
-      }
-    }
-  });
-  return admin;
-};
+// const createAdmin = async (data) => {
+//   const hashedPassword = await bcryptUtil.hashPassword(data.password);
+//   const admin = await prisma.admin.create({
+//     data: {
+//       //uuid: prisma.uuid(),
+//       username: data.username,
+//       email: data.email,
+//       password: hashedPassword,
+//       isSuper: data.isSuper || false,
+//       privileges: {
+//         create: data.privileges.map(privilege => ({
+//           //uuid: prisma.uuid(),
+//           privilegeMasterUuid: privilege.privilegeMasterUuid,
+//           status: privilege.status
+//         }))
+//       }
+//     },
+//     include: {
+//       privileges: {
+//         include: {
+//           privilegeMaster: true
+//         }
+//       }
+//     }
+//   });
+//   return admin;
+// };
 
 const loginAdmin = async (data) => {
   console.log(data)
@@ -246,7 +246,25 @@ const updateAdminStatus = async (uuid, status) => {
   }
 };
 
+const findByAny = async(query) => {
+    const result = await prisma.admin.findFirst({
+        where : {...query , isDeleted : false, status : true}
+    })
+
+    return result
+
+}
+
+const createAdmin = async(data) => {
+  const result = await prisma.admin.create({
+    data
+  })
+  return result
+}
+
+
 module.exports = {
+  findByAny,
   createAdmin,
   loginAdmin,
   createSubAdmin,
